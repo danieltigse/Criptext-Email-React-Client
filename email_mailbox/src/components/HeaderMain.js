@@ -8,7 +8,7 @@ const HeaderMain = props => (
   <div className="header-main">
     <SearchBox
       allLabels={props.allLabels}
-      avatarUrl={props.avatarUrl}
+      avatarTimestamp={props.avatarTimestamp}
       isHiddenMenuSearchHints={props.isHiddenMenuSearchHints}
       isHiddenMenuSearchOptions={props.isHiddenMenuSearchOptions}
       isLoadingSearch={props.isLoadingSearch}
@@ -24,7 +24,9 @@ const HeaderMain = props => (
       hints={props.hints}
     />
     <ProfileShortCutWrapper
-      avatarUrl={props.avatarUrl}
+      getLoggedAccounts={props.getLoggedAccounts}
+      onSelectAccount={props.onSelectAccount}
+      avatarTimestamp={props.avatarTimestamp}
       onClickSettings={props.onClickSection}
       openLogin={props.openLogin}
     />
@@ -33,7 +35,8 @@ const HeaderMain = props => (
 
 HeaderMain.propTypes = {
   allLabels: PropTypes.array,
-  avatarUrl: PropTypes.string,
+  avatarTimestamp: PropTypes.number,
+  getLoggedAccounts: PropTypes.func,
   getSearchParams: PropTypes.func,
   hints: PropTypes.object,
   isHiddenMenuSearchHints: PropTypes.bool,
@@ -43,6 +46,8 @@ HeaderMain.propTypes = {
   onClearSearchInput: PropTypes.func,
   onClickSearch: PropTypes.func,
   onSearchSelectThread: PropTypes.func,
+  openLogin: PropTypes.func,
+  onSelectAccount: PropTypes.func,
   onToggleMenuSearchHints: PropTypes.func,
   onToggleMenuSearchOptions: PropTypes.func,
   onTriggerSearch: PropTypes.func,

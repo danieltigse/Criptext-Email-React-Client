@@ -177,6 +177,10 @@ export const deleteMyAccount = async password => {
   return await ipc.callMain('client-delete-my-account', password);
 };
 
+export const getDataReady = async () => {
+  return await callMain('client-get-data-ready');
+};
+
 export const getUserSettings = async () => {
   return await ipc.callMain('client-get-user-settings');
 };

@@ -1302,6 +1302,20 @@ ipc.answerMain('get-events', async () => {
   sendLoadEventsEvent({});
 });
 
+ipcRenderer.on('refresh-window-logged-as', (ev, email) => {
+  showLoggedAsMessage(email);
+});
+
+export const showLoggedAsMessage = email => {
+  const messageData = {
+    ...Messages.success.loggedAs,
+    description: Messages.success.loggedAs.description + email,
+    type: MessageType.SUCCESS
+  };
+  setPendingMessageToDisplay(JSON.stringify(messageData));
+  reloadWindow();
+};
+
 ipcRenderer.on('update-drafts', (ev, shouldUpdateBadge) => {
   const labelId = shouldUpdateBadge ? LabelType.draft.id : undefined;
   sendRefreshThreadsEvent({ labelIds: [labelId] });

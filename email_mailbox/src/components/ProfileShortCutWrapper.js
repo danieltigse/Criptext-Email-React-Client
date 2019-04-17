@@ -2,22 +2,27 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ProfileShortCut from './ProfileShortCut';
 import { myAccount } from '../utils/electronInterface';
-import { getTwoCapitalLetters } from '../utils/StringUtils';
+import { compareAccounts, formAvatarUrl } from '../utils/AccountUtils';
 
 class ProfileShortCutWrapper extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loggedAccounts: [myAccount],
       isHiddenMenuProfilePreview: true
     };
   }
 
   render() {
-    const letters = getTwoCapitalLetters(myAccount.name);
-    const emailAddress = myAccount.email;
+    const currentAccount = this.state.loggedAccounts[0];
+    const { avatarTimestamp } = this.props;
+    const avatarUrl = formAvatarUrl(
+      currentAccount.recipientId,
+      avatarTimestamp
+    );
     return (
       <ProfileShortCut
-        avatarUrl={this.props.avatarUrl}
+        avatarUrl={avatarUrl}
         letters={letters}
         name={myAccount.name}
         emailAddress={emailAddress}
@@ -25,8 +30,17 @@ class ProfileShortCutWrapper extends Component {
         onClickSettings={this.handleClickSettings}
         onToggleMenuProfilePreview={this.handleToggleMenuProfilePreview}
         onClickAddAccount={this.handleClickAddAccount}
+        onClickSelectAccount={this.handleClickSelectAccount}
       />
     );
+  }
+
+  async componentDidMount() {
+    const loggedAccounts = await this.props.getLoggedAccounts();
+    const orderedByStatusAndName = loggedAccounts.sort(compareAccounts);
+    this.setState({
+      loggedAccounts: orderedByStatusAndName
+    });
   }
 
   handleClickSettings = () => {
@@ -48,11 +62,19 @@ class ProfileShortCutWrapper extends Component {
       isHiddenMenuProfilePreview: !this.state.isHiddenMenuProfilePreview
     });
   };
+
+  handleClickSelectAccount = async account => {
+    await this.props.onSelectAccount(account);
+  };
 }
 
 ProfileShortCutWrapper.propTypes = {
   avatarUrl: PropTypes.string,
-  onClickSettings: PropTypes.func
+  onClickSettings: PropTypes.func,
+  avatarTimestamp: PropTypes.string,
+  getLoggedAccounts: PropTypes.func,
+  onSelectAccount: PropTypes.func,
+  openLogin: PropTypes.func
 };
 
 export default ProfileShortCutWrapper;

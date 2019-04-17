@@ -7,20 +7,20 @@ import {
   removeAllThreads
 } from '../actions/index';
 import HeaderMainWrapper from '../components/HeaderMainWrapper';
-import { SectionType, avatarBaseUrl } from '../utils/const';
+import { SectionType, appDomain } from '../utils/const';
 import { LabelType, myAccount } from '../utils/electronInterface';
-import { openLoginWindow } from '../utils/ipc';
+import {
+  openLoginWindow
+} from '../utils/ipc';
+import { showLoggedAsMessage } from '../utils/electronEventInterface';
 
 const mapStateToProps = state => {
   const suggestions = state.get('suggestions');
   const allLabels = getAllLabels(state);
   const avatarTimestamp = state.get('activities').get('avatarTimestamp');
   const isLoadingThreads = state.get('activities').get('isLoadingThreads');
-  const avatarUrl = `${avatarBaseUrl}${
-    myAccount.recipientId
-  }?date=${avatarTimestamp}`;
   return {
-    avatarUrl,
+    avatarTimestamp,
     allLabels,
     hints: suggestions.get('hints'),
     isLoadingThreads,
@@ -74,6 +74,20 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     openLogin: () => {
       openLoginWindow();
+    },
+    onSelectAccount: async ({ id, recipientId }) => {
+      await defineActiveAccountById(id);
+      const email = `${recipientId}@${appDomain}`;
+      showLoggedAsMessage(email);
+    },
+    getLoggedAccounts: async () => {
+      try {
+        return await getAccountByParams({
+          isLoggedIn: true
+        });
+      } catch (e) {
+        return [];
+      }
     }
   };
 };
