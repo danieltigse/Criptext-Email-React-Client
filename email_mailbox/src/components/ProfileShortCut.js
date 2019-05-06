@@ -33,7 +33,7 @@ const ProfileShortCut = props => (
       onClickAddAccount={props.onClickAddAccount}
       onClickSettings={props.onClickSettings}
       onToggleMenu={props.onToggleMenuProfilePreview}
-      onSelectAccount={props.onClickSelectAccount}
+      onClickItemAccount={props.onClickItemAccount}
     />
   </div>
 );
@@ -46,7 +46,7 @@ ProfileShortCut.propTypes = {
   isHiddenMenuProfilePreview: PropTypes.bool,
   onClickSettings: PropTypes.func,
   onToggleMenuProfilePreview: PropTypes.func,
-  onClickSelectAccount: PropTypes.func
+  onClickItemAccount: PropTypes.func
 };
 
 export default ProfileShortCut;

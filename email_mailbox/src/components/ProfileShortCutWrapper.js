@@ -30,7 +30,7 @@ class ProfileShortCutWrapper extends Component {
         onClickSettings={this.handleClickSettings}
         onToggleMenuProfilePreview={this.handleToggleMenuProfilePreview}
         onClickAddAccount={this.handleClickAddAccount}
-        onClickSelectAccount={this.handleClickSelectAccount}
+        onClickItemAccount={this.handleClickItemAccount}
       />
     );
   }
@@ -63,7 +63,7 @@ class ProfileShortCutWrapper extends Component {
     });
   };
 
-  handleClickSelectAccount = async account => {
+  handleClickItemAccount = async account => {
     await this.props.onSelectAccount(account);
   };
 }
