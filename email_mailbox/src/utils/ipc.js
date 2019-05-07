@@ -177,10 +177,6 @@ export const deleteMyAccount = async password => {
   return await ipc.callMain('client-delete-my-account', password);
 };
 
-export const getDataReady = async () => {
-  return await callMain('client-get-data-ready');
-};
-
 export const getUserSettings = async () => {
   return await ipc.callMain('client-get-user-settings');
 };
@@ -309,6 +305,10 @@ export const createSessionRecord = async params => {
 
 export const createSignedPreKeyRecord = async params => {
   return await ipc.callMain('db-create-signed-prekey-record', params);
+};
+
+export const defineActiveAccountById = async accountId => {
+  return await ipc.callMain('db-define-active-account-by-id', accountId);
 };
 
 export const deleteEmailByKeys = async params => {

@@ -78,6 +78,7 @@ import { addDataApp, loadApp } from './app';
 export {
   addAccounts,
   addEmailLabels,
+  addAccounts,
   addContacts,
   addDataApp,
   addEmails,

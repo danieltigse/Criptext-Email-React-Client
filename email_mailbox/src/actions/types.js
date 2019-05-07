@@ -1,7 +1,3 @@
-export const App = {
-  ADD_DATA: 'ADD_DATA_APP'
-};
-
 export const Account = {
   ADD_BATCH: 'ADD_ACCOUNTS',
   UPDATE_ACCOUNTS: 'UPDATE_ACCOUNTS'
@@ -17,6 +13,10 @@ export const Activity = {
   UNREAD_FILTER: 'FILTER_UNREAD_THREAD',
   UPDATE_LOADING_SYNC: 'UPDATE_LOADING_SYNC',
   UPDATE_SWITCH_THREADS: 'UPDATE_SWITCH_THREADS'
+};
+
+export const App = {
+  ADD_DATA: 'ADD_DATA_APP'
 };
 
 export const Contact = {
@@ -49,10 +49,8 @@ export const File = {
 export const Label = {
   ADD_BATCH: 'ADD_LABELS',
   UPDATE: 'UPDATE_LABEL',
-  UPDATE_LABELS: 'UPDATE_LABELS',
   UPDATE_BADGE_LABELS: 'UPDATE_BADGE_LABELS',
-  REMOVE: 'REMOVE_LABEL',
-  REMOVE_LABELS: 'REMOVE_LABELS'
+  REMOVE: 'REMOVE_LABEL'
 };
 
 export const Suggestions = {

@@ -57,6 +57,25 @@ const createAccount = async params => {
   });
 };
 
+const defineActiveAccountById = async (accountId, prevTrx) => {
+  const transaction = prevTrx ? fn => fn(prevTrx) : db.transaction;
+  await transaction(async trx => {
+    await trx
+      .table(Table.ACCOUNT)
+      .where({ isActive: true })
+      .update({ isActive: false });
+    await trx
+      .table(Table.ACCOUNT)
+      .where('id', accountId)
+      .update({ isActive: true });
+    const [activeAccount] = await trx
+      .table(Table.ACCOUNT)
+      .select('*')
+      .where({ isActive: true });
+    myAccount.update(activeAccount);
+  });
+};
+
 const getAllAccounts = () => {
   if (!getDB()) return [];
   return Account()
@@ -1498,6 +1517,7 @@ module.exports = {
   createLabel,
   createPendingEvent,
   createSettings,
+  defineActiveAccountById,
   deleteDatabase,
   deleteEmailsByIds,
   deleteEmailByKeys,

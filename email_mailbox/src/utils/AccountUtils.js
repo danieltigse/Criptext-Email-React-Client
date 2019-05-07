@@ -68,6 +68,11 @@ export const defineAccountVisibleParams = (account, timestamp) => {
   };
 };
 
+export const loadAccounts = async () => {
+  const accounts = myAccount.loggedAccounts;
+  return defineAccounts(accounts);
+};
+
 export const formAvatarUrl = (username, domain, timestamp) => {
   return `${avatarBaseUrl}${domain}/${username}?date=${timestamp}`;
 };

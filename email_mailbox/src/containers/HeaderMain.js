@@ -10,7 +10,8 @@ import HeaderMainWrapper from '../components/HeaderMainWrapper';
 import { SectionType, appDomain } from '../utils/const';
 import { LabelType, myAccount } from '../utils/electronInterface';
 import {
-  openLoginWindow
+  openLoginWindow,
+  defineActiveAccountById
 } from '../utils/ipc';
 import { showLoggedAsMessage } from '../utils/electronEventInterface';
 
@@ -81,13 +82,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       showLoggedAsMessage(email);
     },
     getLoggedAccounts: async () => {
-      try {
-        return await getAccountByParams({
-          isLoggedIn: true
-        });
-      } catch (e) {
-        return [];
-      }
+      return myAccount.loggedAccounts
     }
   };
 };
