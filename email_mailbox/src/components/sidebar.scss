@@ -124,7 +124,7 @@
           }
         }
 
-        span {
+        > span, .nav-item-container >span {
           display: block;
           font-family: NunitoSans;
           font-size: 13px;

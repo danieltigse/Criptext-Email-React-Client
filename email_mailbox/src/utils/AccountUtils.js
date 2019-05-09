@@ -20,7 +20,7 @@ export const defineAccounts = accounts => {
     const account = {
       id: element.id,
       badge: element.badge || 0,
-      isActive: !!element.isActive,
+      isActive: element.isActive,
       name: element.name,
       recipientId: element.recipientId
     };

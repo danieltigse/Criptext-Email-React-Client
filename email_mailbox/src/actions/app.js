@@ -8,10 +8,10 @@ import {
   stopLoadThread,
   updateBadgeLabels
 } from './index';
-import { loadAccounts } from './../utils/AccountUtils';
-import { defineLabels } from './../utils/LabelUtils';
-import { defineThreads } from './../utils/ThreadUtils';
-import { defineFeedItems } from './../utils/FeedItemUtils';
+import { assembleAccounts } from './../utils/AccountUtils';
+import { assembleLabels } from './../utils/LabelUtils';
+import { assembleThreads } from './../utils/ThreadUtils';
+import { assembleFeedItems } from './../utils/FeedItemUtils';
 import { getGroupEvents } from './../utils/electronEventInterface';
 import { LabelType, needsUpgrade } from './../utils/electronInterface';
 const INIT_LIMIT_THREADS = 22;
@@ -39,17 +39,18 @@ export const addDataApp = ({
 
 export const loadApp = params => {
   return async dispatch => {
-    const accounts = await loadAccounts();
-    const labels = await defineLabels();
-    const { threads, contacts } = await defineThreads({
+    const accounts = await assembleAccounts();
+    const labels = await assembleLabels();
+    const { threads, contacts } = await assembleThreads({
       ...params,
       limit: INIT_LIMIT_THREADS
     });
-    const { feedItems, badge } = await defineFeedItems();
+    const feeditems = await assembleFeedItems();
+    const account = addAccounts(accounts);
     const activity = stopLoadThread();
     const account = addAccounts(accounts);
     const contact = addContacts(contacts);
-    const feeditem = addFeedItems(feedItems, badge, true);
+    const feeditem = addFeedItems(feeditems, badge, true);
     const label = addLabels(labels);
     const thread = addThreads(params.labelId, threads, true);
 
