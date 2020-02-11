@@ -2,6 +2,10 @@ import ipc from '@criptext/electron-better-ipc/renderer';
 
 /*  Windows call
 ----------------------------- */
+export const changeAccountApp = async params => {
+  return await ipc.callMain('change-account-app', params);
+};
+
 export const checkForUpdates = showDialog => {
   ipc.callMain('check-for-updates', showDialog);
 };
@@ -54,7 +58,7 @@ export const openLoginWindow = () => {
   ipc.callMain('open-login');
 };
 
-export const processPendingEvents = () => {
+export const processPendingEvents = params => {
   setTimeout(() => {
     ipc.callMain('process-pending-events', params);
   }, 1000);
@@ -305,10 +309,6 @@ export const createSessionRecord = async params => {
 
 export const createSignedPreKeyRecord = async params => {
   return await ipc.callMain('db-create-signed-prekey-record', params);
-};
-
-export const defineActiveAccountById = async accountId => {
-  return await ipc.callMain('db-define-active-account-by-id', accountId);
 };
 
 export const deleteEmailByKeys = async params => {

@@ -319,7 +319,8 @@ class LinkNewDeviceWrapper extends Component {
                 this.incrementPercentage();
                 clearSyncData();
                 await setTimeout(() => {
-                  this.nextWindow();
+                  //TODO: get account id
+                  this.nextWindow(1, remoteData.recipientId);
                 }, 4000);
               }
             );
@@ -443,11 +444,11 @@ class LinkNewDeviceWrapper extends Component {
     }
   };
 
-  nextWindow = () => {
+  nextWindow = (accountId, recipientId) => {
     if (this.props.shouldResetPIN) {
       openPinWindow({ pinType: 'signin' });
     } else {
-      openMailboxWindow();
+      openMailboxWindow(accountId, recipientId);
     }
     closeCreatingKeysLoadingWindow();
   };

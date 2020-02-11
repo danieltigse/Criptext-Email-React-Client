@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ProfileShortCut from './ProfileShortCut';
 import { myAccount } from '../utils/electronInterface';
+import { defineAccountVisibleParams } from '../utils/AccountUtils';
 
 class ProfileShortCutWrapper extends Component {
   constructor(props) {
@@ -10,22 +11,19 @@ class ProfileShortCutWrapper extends Component {
       isHiddenMenuProfilePreview: true,
       hasUnreadsEmailsOtherAccounts: false
     };
-    this.currentAccount = this.props.accounts[0];
-    const { letters, avatarUrl } = defineAccountVisibleParams(
-      this.currentAccount,
-      this.props.avatarTimestamp
-    );
-    this.letters = letters;
-    this.avatarUrl = avatarUrl;
   }
 
   render() {
+    const { letters, avatarUrl } = defineAccountVisibleParams(
+      myAccount,
+      this.props.avatarTimestamp
+    );
     return (
       <ProfileShortCut
         avatarUrl={avatarUrl}
         letters={letters}
         name={myAccount.name}
-        emailAddress={emailAddress}
+        emailAddress={myAccount.email}
         hasUnreadsEmailsOtherAccounts={this.state.hasUnreadsEmailsOtherAccounts}
         isHiddenMenuProfilePreview={this.state.isHiddenMenuProfilePreview}
         onClickAddAccount={this.handleClickAddAccount}
@@ -58,16 +56,17 @@ class ProfileShortCutWrapper extends Component {
   };
 
   handleClickItemAccount = async account => {
-    await this.props.onSelectAccount(account);
+    await this.props.onUpdateApp(account);
+    this.handleToggleMenuProfilePreview();
   };
 }
 
 ProfileShortCutWrapper.propTypes = {
   avatarUrl: PropTypes.string,
   onClickSettings: PropTypes.func,
-  avatarTimestamp: PropTypes.string,
+  avatarTimestamp: PropTypes.number,
   getLoggedAccounts: PropTypes.func,
-  onSelectAccount: PropTypes.func,
+  onUpdateApp: PropTypes.func,
   openLogin: PropTypes.func
 };
 

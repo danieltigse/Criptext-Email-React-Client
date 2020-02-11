@@ -7,7 +7,6 @@ import {
   cleanDatabase,
   createContact,
   createSettings,
-  getAccount,
   getAccountByParams,
   getComputerName,
   getKeyBundle,
@@ -38,7 +37,9 @@ const createAccount = async ({
   recoveryEmail
 }) => {
   // to do: check getAccount
-  const [currentAccount] = await getAccount();
+  const [currentAccount] = await getAccountByParams({
+    isActive: true
+  });
   const username = currentAccount ? currentAccount.recipientId : null;
   if (username) {
     await cleanDatabase(username);
@@ -103,7 +104,9 @@ const createAcountAndGetKeyBundle = async ({
   deviceId
 }) => {
   // to do: check getAccount
-  const [currentAccount] = await getAccount();
+  const [currentAccount] = await getAccountByParams({
+    isActive: true
+  });
   if (currentAccount && currentAccount.recipientId !== recipientId) {
     await cleanDatabase(currentAccount.recipientId);
   }

@@ -57,23 +57,21 @@ const createAccount = async params => {
   });
 };
 
-const defineActiveAccountById = async (accountId, prevTrx) => {
-  const transaction = prevTrx ? fn => fn(prevTrx) : db.transaction;
-  await transaction(async trx => {
-    await trx
-      .table(Table.ACCOUNT)
-      .where({ isActive: true })
-      .update({ isActive: false });
-    await trx
-      .table(Table.ACCOUNT)
-      .where('id', accountId)
-      .update({ isActive: true });
-    const [activeAccount] = await trx
-      .table(Table.ACCOUNT)
-      .select('*')
-      .where({ isActive: true });
-    myAccount.update(activeAccount);
-  });
+const defineActiveAccountById = async ({ accountId }, prevTrx) => {
+  await Account().update(
+    { isActive: false },
+    {
+      where: { isActive: true },
+      transaction: prevTrx
+    }
+  );
+  await Account().update(
+    { isActive: true },
+    {
+      where: { id: accountId },
+      transaction: prevTrx
+    }
+  );
 };
 
 const getAllAccounts = () => {
@@ -1348,25 +1346,35 @@ const cleanDataBase = async () => {
 };
 
 const cleanDataLogout = async recipientId => {
+  const [account] = await getAccountByParams({ recipientId });
+  if (!account) return;
+  const accountId = account.id;
   const params = {
     deviceId: '',
     jwt: '',
     refreshToken: '',
-    isLoggedIn: false,
-    isActive: false
+    isActive: false,
+    isLoggedIn: false
   };
-
-  return await getDB().transaction(async trx => {
+  await getDB().transaction(async trx => {
     await Account().update(params, {
       where: { recipientId },
       transaction: trx
     });
-    await Prekeyrecord().destroy({ where: {}, transaction: trx });
-    await Signedprekeyrecord().destroy({ where: {}, transaction: trx });
-    await Sessionrecord().destroy({ where: {}, transaction: trx });
-    await Identitykeyrecord().destroy({ where: {}, transaction: trx });
-    await Settings().destroy({ where: {}, transaction: trx });
+    await Prekeyrecord().destroy({ where: { accountId }, transaction: trx });
+    await Signedprekeyrecord().destroy({
+      where: { accountId },
+      transaction: trx
+    });
+    await Sessionrecord().destroy({ where: { accountId }, transaction: trx });
+    await Identitykeyrecord().destroy({
+      where: { accountId },
+      transaction: trx
+    });
+    await Settings().destroy({ where: { accountId }, transaction: trx });
   });
+  const [otherAccount] = await getAccountByParams({ isLoggedIn: true });
+  return otherAccount;
 };
 
 const cleanKeys = async () => {

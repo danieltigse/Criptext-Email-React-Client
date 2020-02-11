@@ -24,7 +24,7 @@ const HeaderMain = props => (
       hints={props.hints}
     />
     <ProfileShortCut
-      onSelectAccount={props.onSelectAccount}
+      onUpdateApp={props.onUpdateApp}
       avatarTimestamp={props.avatarTimestamp}
       onClickSettings={props.onClickSection}
       openLogin={props.openLogin}
@@ -45,10 +45,10 @@ HeaderMain.propTypes = {
   onClickSearch: PropTypes.func,
   onSearchSelectThread: PropTypes.func,
   openLogin: PropTypes.func,
-  onSelectAccount: PropTypes.func,
   onToggleMenuSearchHints: PropTypes.func,
   onToggleMenuSearchOptions: PropTypes.func,
   onTriggerSearch: PropTypes.func,
+  onUpdateApp: PropTypes.func,
   searchParams: PropTypes.object,
   threads: PropTypes.object
 };

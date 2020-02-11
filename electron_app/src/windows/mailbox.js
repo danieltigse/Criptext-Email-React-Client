@@ -95,13 +95,18 @@ const showFileExplorer = filename => {
   mailboxWindow.send('display-message-success-download');
 };
 
-const show = async ({ firstOpenApp = false }) => {
+const show = async ({ firstOpenApp = false, accountId, recipientId }) => {
   const existVisibleWindow = BrowserWindow.getAllWindows().filter(w =>
     w.isVisible()
   );
   if (mailboxWindow) {
-    mailboxWindow.show();
-    createTrayIcon();
+    const isOpened = mailboxWindow.isVisible();
+    if (isOpened && accountId && recipientId) {
+      send('refresh-window-logged-as', { accountId, recipientId });
+    } else {
+      mailboxWindow.show();
+      createTrayIcon();
+    }
     if (firstOpenApp) {
       updateUserData();
       addEventTrack(NUCLEUS_EVENTS.MAILBOX_OPENED);

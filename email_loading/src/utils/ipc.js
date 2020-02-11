@@ -6,8 +6,8 @@ export const closeCreatingKeysLoadingWindow = () => {
 
 export const getComputerName = () => ipc.callMain('get-computer-name');
 
-export const openMailboxWindow = () => {
-  ipc.callMain('open-mailbox', { firstOpenApp: true });
+export const openMailboxWindow = (accountId, recipientId) => {
+  ipc.callMain('open-mailbox', { firstOpenApp: true, accountId, recipientId });
 };
 
 export const openPinWindow = params => {

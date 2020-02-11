@@ -1,19 +1,14 @@
 import { connect } from 'react-redux';
 import { getAllLabels } from '../selectors/labels';
-import { getAllAccounts } from '../selectors/accounts';
 import {
   clearSuggestions,
   loadSuggestions,
   removeAllThreads
 } from '../actions/index';
 import HeaderMainWrapper from '../components/HeaderMainWrapper';
-import { SectionType, appDomain } from '../utils/const';
+import { SectionType } from '../utils/const';
 import { LabelType, myAccount } from '../utils/electronInterface';
-import {
-  openLoginWindow,
-  defineActiveAccountById
-} from '../utils/ipc';
-import { showLoggedAsMessage } from '../utils/electronEventInterface';
+import { openLoginWindow } from '../utils/ipc';
 
 const mapStateToProps = state => {
   const suggestions = state.get('suggestions');
@@ -76,13 +71,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     openLogin: () => {
       openLoginWindow();
     },
-    onSelectAccount: async ({ id, recipientId }) => {
-      await defineActiveAccountById(id);
-      const email = `${recipientId}@${appDomain}`;
-      showLoggedAsMessage(email);
-    },
-    getLoggedAccounts: async () => {
-      return myAccount.loggedAccounts
+    getLoggedAccounts: () => {
+      return myAccount.loggedAccounts;
     }
   };
 };

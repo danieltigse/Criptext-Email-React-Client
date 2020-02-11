@@ -166,7 +166,8 @@ class LoadingWrapper extends Component {
     if (this.state.accountResponse === true) {
       clearTimeout(this.state.timeout);
       this.setState({ percent: 100 }, () => {
-        this.nextWindow();
+        //TODO: get account id
+        this.nextWindow(1, remoteData.recipientId);
       });
     }
     this.setState({
@@ -174,11 +175,11 @@ class LoadingWrapper extends Component {
     });
   };
 
-  nextWindow = () => {
+  nextWindow = (accountId, recipientId) => {
     if (this.props.shouldResetPIN) {
       openPinWindow({ pinType: 'signin' });
     } else {
-      openMailboxWindow();
+      openMailboxWindow(accountId, recipientId);
     }
     closeCreatingKeysLoadingWindow();
   };

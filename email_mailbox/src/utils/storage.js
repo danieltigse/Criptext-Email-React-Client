@@ -53,6 +53,16 @@ const openDB = () => {
   });
 };
 
+/*  Activity Feed Open
+------------------------------------*/
+export const storeSeenTimestamp = () => {
+  localStorage.setItem('seenTimestamp', Date.now());
+};
+
+export const getSeenTimestamp = () => {
+  return localStorage.getItem('seenTimestamp') || null;
+};
+
 /*  Resend Confirmation Link
 ------------------------------------*/
 export const storeResendConfirmationTimestamp = miliseconds => {

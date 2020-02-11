@@ -50,6 +50,7 @@ ProfileShortCut.propTypes = {
   letters: PropTypes.string,
   accounts: PropTypes.array,
   isHiddenMenuProfilePreview: PropTypes.bool,
+  onClickAddAccount: PropTypes.func,
   onClickSettings: PropTypes.func,
   onToggleMenuProfilePreview: PropTypes.func,
   onClickItemAccount: PropTypes.func

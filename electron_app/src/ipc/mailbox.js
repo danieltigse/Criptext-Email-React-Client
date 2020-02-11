@@ -45,10 +45,13 @@ ipc.answerRenderer('open-file-explorer', filename => {
   mailboxWindow.showFileExplorer(filename);
 });
 
-ipc.answerRenderer('open-mailbox', ({ firstOpenApp }) => {
-  socketClient.add(myAccount.getDataForSocket());
-  mailboxWindow.show({ firstOpenApp });
-});
+ipc.answerRenderer(
+  'open-mailbox',
+  ({ firstOpenApp, accountId, recipientId }) => {
+    socketClient.add(myAccount.getDataForSocket());
+    mailboxWindow.show({ firstOpenApp, accountId, recipientId });
+  }
+);
 
 ipc.answerRenderer('print-to-pdf', async ({ emailId, threadId }) => {
   await printEmailOrThread({ emailId, threadId });

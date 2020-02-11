@@ -20,9 +20,6 @@ const mapStateToProps = state => {
   };
 };
 
-const ProfileShortCut = connect(
-  mapStateToProps,
-  null
-)(ProfileShortCutWrapper);
+const ProfileShortCut = connect(mapStateToProps, null)(ProfileShortCutWrapper);
 
 export default ProfileShortCut;

@@ -1,4 +1,4 @@
-import { Account } from '../actions/types';
+import { Account, Activity } from '../actions/types';
 import { fromJS } from 'immutable';
 import { defineAccounts } from './../utils/AccountUtils';
 import { myAccount } from './../utils/electronInterface';
@@ -22,14 +22,14 @@ const formAccounts = account => {
 
 const initAccounts = account => fromJS(defineAccounts(formAccounts(account)));
 
-const accounts = (state = initAccount, action) => {
+const accounts = (state = initAccounts(myAccount), action) => {
   switch (action.type) {
     case Account.ADD_BATCH: {
       const accounts = fromJS(action.accounts);
       return state.merge(accounts);
     }
     case Activity.LOGOUT: {
-      return initAccount;
+      return initAccounts(myAccount);
     }
     case Account.UPDATE_ACCOUNTS: {
       const { accounts } = action;
@@ -44,6 +44,19 @@ const accounts = (state = initAccount, action) => {
           })
         );
       }, state);
+    }
+    default:
+      return state;
+  }
+};
+
+const account = (state, action) => {
+  switch (action.type) {
+    case Account.UPDATE_ACCOUNTS: {
+      const { badge } = action.account;
+      return state.merge({
+        badge: badge || state.get('badge')
+      });
     }
     default:
       return state;

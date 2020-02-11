@@ -36,13 +36,13 @@ const create = () => {
     loginWindow.webContents.openDevTools({ mode: 'undocked' });
   }
 
-  loginWindow.on('close', e => {
+  loginWindow.on('close', (e, isExit) => {
     const isMacOs = process.platform === 'darwin';
     if (shouldCloseForce === true) {
       shouldCloseForce = false;
       return;
     }
-    if (isMacOs && !globalManager.forcequit.get()) {
+    if ((isMacOs && !globalManager.forcequit.get()) || isExit) {
       e.preventDefault();
       hide();
     }
@@ -78,6 +78,12 @@ const close = ({ forceClose }) => {
   }
 };
 
+const exit = () => {
+  if (loginWindow !== undefined) {
+    loginWindow.close(true);
+  }
+};
+
 const hide = () => {
   if (loginWindow && loginWindow.hide) {
     loginWindow.hide();
@@ -100,6 +106,7 @@ const send = (message, data) => {
 module.exports = {
   loginWindow,
   close,
+  exit,
   hide,
   minimize,
   show,

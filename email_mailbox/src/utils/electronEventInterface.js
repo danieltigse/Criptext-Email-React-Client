@@ -12,6 +12,7 @@ import {
 } from './electronInterface';
 import {
   checkForUpdates,
+  changeAccountApp,
   cleanDatabase,
   createEmail,
   createEmailLabel,
@@ -300,6 +301,11 @@ export const getGroupEvents = async ({
     showNotification,
     useLegacy
   });
+};
+
+export const isGettingEventsGet = () => isGettingEvents;
+export const isGettingEventsUpdate = value => {
+  isGettingEvents = value;
 };
 
 export const handleEvent = (incomingEvent, useLegacy) => {
@@ -1302,9 +1308,15 @@ ipc.answerMain('get-events', async () => {
   sendLoadEventsEvent({});
 });
 
-ipcRenderer.on('refresh-window-logged-as', (ev, email) => {
-  showLoggedAsMessage(email);
+ipcRenderer.on('refresh-window-logged-as', (ev, { accountId, recipientId }) => {
+  emitter.emit(Event.LOAD_APP, { accountId, recipientId });
 });
+
+export const selectAccountAsActive = async ({ accountId, recipientId }) => {
+  await changeAccountApp({ accountId });
+  const email = `${recipientId}@${appDomain}`;
+  showLoggedAsMessage(email);
+};
 
 export const showLoggedAsMessage = email => {
   const messageData = {
@@ -1312,8 +1324,7 @@ export const showLoggedAsMessage = email => {
     description: Messages.success.loggedAs.description + email,
     type: MessageType.SUCCESS
   };
-  setPendingMessageToDisplay(JSON.stringify(messageData));
-  reloadWindow();
+  emitter.emit(Event.DISPLAY_MESSAGE, messageData);
 };
 
 ipcRenderer.on('update-drafts', (ev, shouldUpdateBadge) => {

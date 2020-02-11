@@ -34,6 +34,7 @@ const Panel = props => (
       <MainWrapper
         onClickSection={props.onClickSection}
         onClickThreadBack={props.onClickThreadBack}
+        onUpdateApp={props.onUpdateApp}
         onToggleActivityPanel={props.onToggleActivityPanel}
         sectionSelected={props.sectionSelected}
       />
@@ -170,6 +171,7 @@ Panel.propTypes = {
   onClickSection: PropTypes.func,
   onToggleActivityPanel: PropTypes.func,
   onToggleSideBar: PropTypes.func,
+  onUpdateApp: PropTypes.func,
   sectionSelected: PropTypes.object
 };
 

@@ -1,6 +1,10 @@
 import { FeedItem } from './types';
-import { deleteFeedItemById, updateFeedItem } from './../utils/ipc';
-import { assembleFeedItems } from '../utils/FeedItemUtils';
+import {
+  deleteFeedItemById,
+  getFeedItemsCounterBySeen,
+  updateFeedItems as updateFeedItemsDB
+} from './../utils/ipc';
+import { defineFeedItems } from '../utils/FeedItemUtils';
 
 export const addFeedItems = (feeds, badge, clear) => {
   return {
@@ -43,8 +47,8 @@ export const removeFeedItemSuccess = feedItemId => {
 export const updateFeedItem = ({ id, seen }) => {
   return async dispatch => {
     try {
-      const feedItems = await assembleFeedItems();
-      dispatch(addFeedItems(feedItems, clear));
+      await updateFeedItemsDB({ ids: [id], seen });
+      dispatch(updateFeedItemSuccess({ id, seen }));
     } catch (e) {
       // TO DO
     }

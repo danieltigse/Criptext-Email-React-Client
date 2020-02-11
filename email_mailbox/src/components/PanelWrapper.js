@@ -78,6 +78,7 @@ class PanelWrapper extends Component {
         onCloseMailboxPopup={this.handleCloseMailboxPopup}
         onToggleActivityPanel={this.handleToggleActivityPanel}
         onToggleSideBar={this.handleToggleSideBar}
+        onUpdateApp={this.handleUpdateApp}
         sectionSelected={this.state.sectionSelected}
         {...this.props}
       />
@@ -193,8 +194,15 @@ class PanelWrapper extends Component {
     });
   };
 
+  handleUpdateApp = ({ mailbox, accountId, recipientId }) => {
+    const mailboxSelected =
+      mailbox || this.state.sectionSelected.params.mailboxSelected;
+    this.props.onUpdateAccountApp({ mailboxSelected, accountId, recipientId });
+  };
+
   initEventHandlers = () => {
     addEvent(Event.ENABLE_WINDOW, this.enableWindowListenerCallback);
+    addEvent(Event.LOAD_APP, this.loadAppListenerCallback);
     addEvent(Event.LOAD_EVENTS, this.loadEventsListenerCallback);
     addEvent(Event.REFRESH_THREADS, this.refreshThreadsListenerCallback);
     addEvent(Event.STOP_LOAD_SYNC, this.stopLoadSyncListenerCallback);
@@ -229,10 +237,12 @@ class PanelWrapper extends Component {
 
   removeEventHandlers = () => {
     removeEvent(Event.ENABLE_WINDOW, this.enableWindowListenerCallback);
+    removeEvent(Event.LOAD_APP, this.loadAppListenerCallback);
     removeEvent(Event.LOAD_EVENTS, this.loadEventsListenerCallback);
     removeEvent(Event.REFRESH_THREADS, this.refreshThreadsListenerCallback);
     removeEvent(Event.STOP_LOAD_SYNC, this.stopLoadSyncListenerCallback);
     removeEvent(Event.STORE_LOAD, this.storeLoadListenerCallback);
+    removeEvent(Event.UPDATE_LOADING_SYNC, this.updateLoadingSync);
     removeEvent(
       Event.UPDATE_THREAD_EMAILS,
       this.updateThreadEmailsListenerCallback
@@ -279,6 +289,10 @@ class PanelWrapper extends Component {
 
   loadEventsListenerCallback = params => {
     this.props.onLoadEvents(params);
+  };
+
+  loadAppListenerCallback = ({ mailbox, accountId, recipientId }) => {
+    this.handleUpdateApp({ mailbox, accountId, recipientId });
   };
 
   refreshThreadsListenerCallback = eventParams => {
@@ -572,6 +586,7 @@ PanelWrapper.propTypes = {
   onUpdateAvatar: PropTypes.func,
   onUpdateLabels: PropTypes.func,
   onUnsendEmail: PropTypes.func,
+  onUpdateAccountApp: PropTypes.func,
   onUpdateEmailIdsThread: PropTypes.func,
   onUpdateLoadingSync: PropTypes.func,
   onUpdateOpenedAccount: PropTypes.func,
