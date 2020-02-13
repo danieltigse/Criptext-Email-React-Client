@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SearchBox from './SearchBox';
-import ProfileShortCutWrapper from './ProfileShortCutWrapper';
+import ProfileShortCut from './../containers/ProfileShortCut';
 import './headermain.scss';
 
 const HeaderMain = props => (
   <div className="header-main">
     <SearchBox
       allLabels={props.allLabels}
-      avatarUrl={props.avatarUrl}
       isHiddenMenuSearchHints={props.isHiddenMenuSearchHints}
       isHiddenMenuSearchOptions={props.isHiddenMenuSearchOptions}
       isLoadingSearch={props.isLoadingSearch}
@@ -23,9 +22,10 @@ const HeaderMain = props => (
       threads={props.threads}
       hints={props.hints}
     />
-    <ProfileShortCutWrapper
+    <ProfileShortCut
       avatarUrl={props.avatarUrl}
       onClickSettings={props.onClickSection}
+      openLogin={props.openLogin}
     />
   </div>
 );
@@ -42,6 +42,7 @@ HeaderMain.propTypes = {
   onClearSearchInput: PropTypes.func,
   onClickSearch: PropTypes.func,
   onSearchSelectThread: PropTypes.func,
+  openLogin: PropTypes.func,
   onToggleMenuSearchHints: PropTypes.func,
   onToggleMenuSearchOptions: PropTypes.func,
   onTriggerSearch: PropTypes.func,
