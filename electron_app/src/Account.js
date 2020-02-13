@@ -91,6 +91,7 @@ class Account {
   }
 
   update(accountObj) {
+    console.log(JSON.stringify(accountObj));
     if (!this.activeAccount) return;
 
     const account =

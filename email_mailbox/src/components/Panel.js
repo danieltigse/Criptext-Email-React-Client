@@ -6,6 +6,7 @@ import SideBar from './../containers/SideBar';
 import WelcomeWrapper from './WelcomeWrapper';
 import PopupHOC from './PopupHOC';
 import AccountDeletedPopup from './AccountDeletedPopup';
+import ChangeAccountPopup from './ChangeAccountPopup';
 import CreatingBackupFilePopup from './CreatingBackupFilePopup';
 import DeviceRemovedPopup from './DeviceRemovedPopup';
 import MigrationPopupWrapper from './MigrationPopupWrapper';
@@ -35,6 +36,7 @@ const Panel = props => (
         onClickSection={props.onClickSection}
         onClickThreadBack={props.onClickThreadBack}
         onToggleActivityPanel={props.onToggleActivityPanel}
+        onUpdateApp={props.onUpdateApp}
         sectionSelected={props.sectionSelected}
       />
     </div>
@@ -64,6 +66,17 @@ const renderMailboxPopup = ({ type, isHidden, ...props }) => {
         <Accountdeletedpopup
           isHidden={isHidden}
           popupPosition={{ left: '50%', top: '50%' }}
+        />
+      );
+    }
+    case MAILBOX_POPUP_TYPES.CHANGE_ACCOUNT: {
+      const ChangeAccountpopup = PopupHOC(ChangeAccountPopup);
+      return (
+        <ChangeAccountpopup
+          isHidden={isHidden}
+          popupPosition={{ left: '50%', top: '50%' }}
+          isClosable={false}
+          theme={'dark'}
         />
       );
     }
@@ -170,6 +183,7 @@ Panel.propTypes = {
   onClickSection: PropTypes.func,
   onToggleActivityPanel: PropTypes.func,
   onToggleSideBar: PropTypes.func,
+  onUpdateApp: PropTypes.func,
   sectionSelected: PropTypes.object
 };
 

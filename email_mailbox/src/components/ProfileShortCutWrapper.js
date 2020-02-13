@@ -17,6 +17,7 @@ class ProfileShortCutWrapper extends Component {
       this.props.accounts[0],
       this.props.avatarTimestamp
     );
+    console.log(letters, avatarUrl);
     return (
       <ProfileShortCut
         avatarUrl={avatarUrl}
